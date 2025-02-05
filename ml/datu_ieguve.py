@@ -43,15 +43,18 @@ def dabut_info(lapa):
         auto = {}
         auto["sludinajuma_saite"] = lauki[1].find("a")["href"]
         auto["bilde"] = lauki[1].find("img")["src"]
-        auto["marka"] = lauki[3].contents[0]
-        auto["modelis"] = lauki[3].contents[1]
+        auto["marka"] = lauki[3].contents
+        auto["gads"] = lauki[4].contents
+        auto["tilpums"] = lauki[5].contents
+        auto["nobraukums"] = lauki[6].contents
+        auto["cena"] = lauki[7].contents
         print(auto["marka"])
         dati.append(auto)
     return dati
 
 def saglaba_datus(dati):
     with open(DATI+"sslv.csv", "w", encoding="utf-8") as f:
-        lauku_nosaukumi = ["sludinajuma_saite", "bilde", "marka", "modelis"]
+        lauku_nosaukumi = ["sludinajuma_saite", "bilde", "marka", "gads", "tilpums", "nobraukums", "cena"]
         w = csv.DictWriter(f, fieldnames=lauku_nosaukumi)
         w.writeheader()
         for auto in dati:
@@ -67,6 +70,6 @@ def dabut_info_daudz(skaits):
         visi_dati += dati
     return visi_dati
 
-# saglaba_visas_lapas(5)
-info = dabut_info_daudz(5)
+saglaba_visas_lapas(250)
+info = dabut_info_daudz(250)
 saglaba_datus(info)

@@ -18,27 +18,22 @@ class Koks:
         return
     
     def add(self, jaunais):
-        if self.sakne == None:
-            self.sakne = Node(jaunais)
-            return
-        limenis = 1
-        vecaks = self.sakne
-        if jaunais>vecaks.info:
-            vieta = vecaks.bigger
+        if self.sakne is None:
+            self.sakne = Node(jaunais, limenis=0)
         else:
-            vieta = vecaks.smaller
-        while vieta:
-            limenis +=1
-            vecaks = vieta
-            if jaunais>vecaks.info:
-                vieta = vecaks.bigger
+            self.add_rekursija(self.sakne, jaunais, level=1)
+
+    def add_rekursija(self, tagadejais: Node, jaunais, level):
+        if jaunais > tagadejais.info:
+            if tagadejais.bigger is None:
+                tagadejais.bigger = Node(jaunais, vecaks=tagadejais, limenis=level)
             else:
-                vieta = vecaks.smaller
-        if jaunais>vecaks.info:
-            vecaks.bigger = Node(jaunais, vecaks=vecaks, limenis=limenis)
+                self.add_rekursija(tagadejais.bigger, jaunais, level + 1)
         else:
-            vecaks.smaller = Node(jaunais, vecaks=vecaks, limenis=limenis)
-        return
+            if tagadejais.smaller is None:
+                tagadejais.smaller = Node(jaunais, vecaks=tagadejais, limenis=level)
+            else:
+                self.add_rekursija(tagadejais.smaller, jaunais, level + 1)
     
     def read(self):
         if self.sakne == None:
@@ -56,12 +51,17 @@ class Koks:
         return
     
     def sort(self):
-        if self.sakne == None:
-            print("Nav elementu kokā!")
-            return
-        sakums = self.sakne
-        self.read_mazakais(sakums)
+        saraksts = []
+        self.seciba(self.sakne, saraksts)
+        print("Saraksts ar visiem elementiem:", saraksts)
+        return saraksts
 
+    def seciba(self, node: Node, saraksts):
+        if node is None:
+            return
+        self.seciba(node.smaller, saraksts)
+        saraksts.append(node.info)
+        self.seciba(node.bigger, saraksts)
     def read_mazakais(self, mazakais):
         if mazakais.smaller:
             self.read_mazakais(mazakais.smaller)
@@ -97,11 +97,11 @@ class Koks:
 koks = Koks()
 koks.add(8)
 koks.add(4)
-koks.add(90)
-koks.add(1)
+koks.add(60)
+koks.add(12)
 koks.add(7)
-koks.add(3)
+koks.add(33)
 koks.add(2)
-koks.add(18)
+koks.add(128)
 koks.sort()
-koks.search(18)
+koks.search(60)
