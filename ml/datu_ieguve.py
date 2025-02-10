@@ -70,6 +70,6 @@ def dabut_info_daudz(skaits):
         visi_dati += dati
     return visi_dati
 
-saglaba_visas_lapas(250)
+# saglaba_visas_lapas(250)
 info = dabut_info_daudz(250)
 saglaba_datus(info)
